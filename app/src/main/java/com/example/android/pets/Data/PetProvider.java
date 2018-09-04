@@ -2,6 +2,7 @@ package com.example.android.pets.Data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -20,6 +21,14 @@ public class PetProvider extends ContentProvider {
      * Initialize the provider and the database helper object.
      */
 
+    private static final int PETS = 100;
+    private static final int PET_ID = 101;
+    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS,PETS);
+        sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY,PetContract.PATH_PETS+"/#",PET_ID);
+    }
 
     @Override
     public boolean onCreate() {
