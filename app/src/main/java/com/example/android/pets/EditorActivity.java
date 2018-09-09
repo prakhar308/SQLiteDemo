@@ -66,7 +66,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private int mGender = 0,mWeight;
 
-    private String sName,sBreed;
+    private String sName,sBreed,sWeight;
 
 
     @Override
@@ -135,12 +135,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void savePet(){
         sName = mNameEditText.getText().toString().trim();
         sBreed = mBreedEditText.getText().toString().trim();
-        mWeight = Integer.parseInt(mWeightEditText.getText().toString().trim());
+        sWeight = mWeightEditText.getText().toString().trim();
+
+        if (mCurrentPetUri == null &&
+                TextUtils.isEmpty(sName) && TextUtils.isEmpty(sBreed) &&
+                TextUtils.isEmpty(sWeight) && mGender == PetContract.PetEntry.GENDER_UNKNOWN) {return;}
 
         ContentValues values = new ContentValues();
         values.put(PetContract.PetEntry.COLUMN_PET_NAME,sName);
         values.put(PetContract.PetEntry.COLUMN_PET_BREED,sBreed);
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER,mGender);
+
+        mWeight = 0;
+        if (!TextUtils.isEmpty(sWeight)) {
+            mWeight = Integer.parseInt(sWeight);
+        }
+        
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT,mWeight);
 
         if(mCurrentPetUri == null){
