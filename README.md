@@ -3,6 +3,8 @@ Pets App
 
 This app displays a list of pets and their related data that the user inputs.
 It use SQlite database.
+Performs CRUD operations.
+Use ContentProvider and load data using CursorLoader.
 
 Pre-requisites
 --------------
