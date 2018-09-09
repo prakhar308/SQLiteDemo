@@ -92,6 +92,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if(mCurrentPetUri == null){
             setTitle(getString(R.string.editor_activity_title_new_pet));
+            invalidateOptionsMenu();
         }else{
             setTitle(getString(R.string.editor_activity_title_edit_pet));
             getSupportLoaderManager().initLoader(EXISTING_PET_LOADER,null,this);
@@ -112,6 +113,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mGenderSpinner.setOnTouchListener(mTouchListener);
 
         setupSpinner();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new pet, hide the "Delete" menu item.
+        if (mCurrentPetUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
     }
 
     /**
