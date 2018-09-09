@@ -20,7 +20,7 @@ public class PetProvider extends ContentProvider {
     public static final String LOG_TAG = PetProvider.class.getSimpleName();
 
     //Database helper object
-    private PetDbHelper mdbHelper;
+    private PetDbHelper mDbHelper;
     /**
      * Initialize the provider and the database helper object.
      */
@@ -36,7 +36,7 @@ public class PetProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mdbHelper = new PetDbHelper(getContext());
+        mDbHelper = new PetDbHelper(getContext());
         return true;
     }
 
@@ -47,7 +47,7 @@ public class PetProvider extends ContentProvider {
 
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        SQLiteDatabase database = mdbHelper.getReadableDatabase();
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
         Cursor cursor = null;
 
         int match = sUriMatcher.match(uri);
@@ -102,7 +102,7 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Pet requires valid weight");
         }
 
-        SQLiteDatabase database = mdbHelper.getWritableDatabase();
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         long id = database.insert(PetContract.PetEntry.TABLE_NAME,null,values);
 
@@ -165,7 +165,6 @@ public class PetProvider extends ContentProvider {
 
 
         // Otherwise, get writeable database to update the data
-        PetDbHelper mDbHelper = new PetDbHelper(getContext());
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         // Returns the number of database rows affected by the update statement
@@ -177,7 +176,22 @@ public class PetProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        // Get writeable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                // Delete all rows that match the selection and selection args
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            case PET_ID:
+                // Delete a single row given by the ID in the URI
+                selection = PetContract.PetEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
     }
 
     /**
@@ -187,7 +201,6 @@ public class PetProvider extends ContentProvider {
     public String getType(Uri uri) {
         return null;
     }
-
 
 }
 
