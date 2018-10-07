@@ -10,23 +10,27 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ReportActivity extends AppCompatActivity {
 
     Calendar c = Calendar.getInstance();
-    EditText from,to;
+    EditText e_from,e_to;
     Integer flag;
     Button generate_report;
     PetCursorAdapter mCursorAdaptor;
+    String sFromDate,sToDate,sMonth,sDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
-        from = (EditText) findViewById(R.id.from);
-        to = (EditText) findViewById(R.id.to);
+        e_from = (EditText) findViewById(R.id.from);
+        e_to = (EditText) findViewById(R.id.to);
         generate_report = (Button) findViewById(R.id.generate_report);
 
         ListView report_list = (ListView) findViewById(R.id.report_list);
@@ -37,20 +41,48 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                 if(flag == 1){
-                    from.setText(String.valueOf(dayOfMonth)+"/"
-                            +String.valueOf(month)+"/"
-                            +String.valueOf(year));
+                    if(month<10 && dayOfMonth<10){
+                        sMonth = "0" + String.valueOf(month);
+                        sDay = "0"+String.valueOf(dayOfMonth);
+                        sFromDate = (String.valueOf(year)+"-" +sMonth+"-" +sDay);
+                        e_from.setText(sFromDate);
+                    }else if(month<10){
+                        sMonth = "0" + String.valueOf(month);
+                        sFromDate = (String.valueOf(year)+"-" +sMonth+"-"+String.valueOf(dayOfMonth));
+                        e_from.setText(sFromDate);
+                    }else if(dayOfMonth<10){
+                        sDay = "0"+String.valueOf(dayOfMonth);
+                        sFromDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+sDay;
+                        e_from.setText(sFromDate);
+                    }else{
+                        sFromDate = String.valueOf(year+"-"+String.valueOf(month)+"-"+String.valueOf(dayOfMonth));
+                        e_from.setText(sFromDate);
+                    }
                 }
                 if(flag == 0){
-                    to.setText(String.valueOf(dayOfMonth)+"/"
-                            +String.valueOf(month)+"/"
-                            +String.valueOf(year));
+                    if(month<10 && dayOfMonth<10){
+                        sMonth = "0" + String.valueOf(month);
+                        sDay = "0"+String.valueOf(dayOfMonth);
+                        sToDate = (String.valueOf(year)+"-" +sMonth+"-" +sDay);
+                        e_to.setText(sToDate);
+                    }else if(month<10){
+                        sMonth = "0" + String.valueOf(month);
+                        sToDate = (String.valueOf(year)+"-" +sMonth+"-"+String.valueOf(dayOfMonth));
+                        e_to.setText(sToDate);
+                    }else if(dayOfMonth<10){
+                        sDay = "0"+String.valueOf(dayOfMonth);
+                        sToDate = String.valueOf(year)+"-"+String.valueOf(month)+"-"+sDay;
+                        e_to.setText(sToDate);
+                    }else{
+                        sToDate = String.valueOf(year+"-"+String.valueOf(month)+"-"+String.valueOf(dayOfMonth));
+                        e_to.setText(sToDate);
+                    }
                 }
             }
         };
 
 
-        from.setOnClickListener(new View.OnClickListener() {
+        e_from.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 flag = 1;
@@ -59,7 +91,7 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        to.setOnClickListener(new View.OnClickListener() {
+        e_to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 flag = 0;
