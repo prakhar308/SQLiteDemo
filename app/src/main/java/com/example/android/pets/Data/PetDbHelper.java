@@ -24,7 +24,8 @@ public class PetDbHelper extends SQLiteOpenHelper {
                 + PetContract.PetEntry.COLUMN_PET_NAME + " TEXT NOT NULL, "
                 + PetContract.PetEntry.COLUMN_PET_BREED + " TEXT, "
                 + PetContract.PetEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL, "
-                + PetContract.PetEntry.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";
+                + PetContract.PetEntry.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0,"
+                + PetContract.PetEntry.COLUMN_PET_DATE + " DATE"+");";
 
         db.execSQL(SQL_CREATE_PETS_TABLE);
     }
