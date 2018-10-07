@@ -20,6 +20,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -107,6 +108,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 deleteAllPets();
+                return true;
+            case R.id.action_generate_report:
+                Intent i = new Intent(CatalogActivity.this,ReportActivity.class);
+                startActivity(i);
                 return true;
         }
         return super.onOptionsItemSelected(item);
