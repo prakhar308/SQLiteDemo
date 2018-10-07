@@ -64,6 +64,7 @@
             <EditText
                 android:id="@+id/to"
                 android:clickable="true"
+                android:editable="false"
                 style="@style/EditorFieldStyle" />
 
         </LinearLayout>
