@@ -38,6 +38,10 @@ import android.widget.TextView;
 
 import com.example.android.pets.Data.PetContract.PetEntry;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Displays list of pets that were entered and stored in the app.
  */
@@ -47,11 +51,17 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private static final int PET_LOADER = 0;
 
     PetCursorAdapter mCursorAdapter;
+    Date currDate;
+    String sDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        currDate = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sDate = sdf.format(currDate);
 
         // Setup FAB to open EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -130,6 +140,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(PetEntry.COLUMN_PET_BREED,"Terrier");
         values.put(PetEntry.COLUMN_PET_GENDER,PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT,7);
+        values.put(PetEntry.COLUMN_PET_DATE,"2018-09-01");
 
         Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI,values);
     }

@@ -40,6 +40,10 @@ import android.widget.Toast;
 
 import com.example.android.pets.Data.PetContract;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Allows user to create a new pet or edit an existing one.
  */
@@ -67,9 +71,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Gender of the pet. The possible values are:
      * 0 for unknown gender, 1 for male, 2 for female.
      */
+    Date currDate;
+
     private int mGender = 0,mWeight;
 
-    private String sName,sBreed,sWeight;
+    private String sName,sBreed,sWeight,sDate;
 
     private boolean mPetHasChanged = false;
 
@@ -88,7 +94,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_editor);
 
         Intent intent = getIntent();
-         mCurrentPetUri = intent.getData();
+        mCurrentPetUri = intent.getData();
+
+        currDate = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sDate = sdf.format(currDate);
 
         if(mCurrentPetUri == null){
             setTitle(getString(R.string.editor_activity_title_new_pet));
@@ -178,6 +188,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(PetContract.PetEntry.COLUMN_PET_NAME,sName);
         values.put(PetContract.PetEntry.COLUMN_PET_BREED,sBreed);
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER,mGender);
+        values.put(PetContract.PetEntry.COLUMN_PET_DATE,sDate);
 
         mWeight = 0;
         if (!TextUtils.isEmpty(sWeight)) {
